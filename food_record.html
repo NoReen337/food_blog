@@ -1,0 +1,146 @@
+<!-- food_record.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>美食記錄</title>
+</head>
+<body>
+    <header>
+        <h1>Hua的美食筆記</h1>
+        <p>聯絡信箱: rubyluh11@gmail.com</p>
+        <nav>
+            <ul>
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="food_record.html">美食紀錄</a></li>
+                <li>
+                    <label for="category-select">類別</label>
+                    <select id="category-select">
+                        <option value="all">全部</option>
+                        <option value="小吃">小吃</option>
+                        <option value="甜點">甜點</option>
+                        <option value="拉麵">拉麵</option>
+                        <option value="咖哩">咖哩</option>
+                    </select>
+                </li>
+                <li>
+                    <label for="sort-select">排序</label>
+                    <select id="sort-select">
+                        <option value="desc">時間由遠到近</option>
+                        <option value="asc">時間由近到遠</option>
+                    </select>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="food-list">
+        <!-- 這裡會動態生成食物卡片 -->
+    </section>
+
+    <footer>
+        <p>探索更多美食 ➔ <a href="food_record.html">美食紀錄</a></p>
+    </footer>
+
+    <script>
+        // 這裡可以使用 JavaScript 來動態生成食物卡片，根據數據庫或其他來源
+        const foodList = document.getElementById('food-list');
+
+        // 假設有一個食物數據陣列
+        const foods = [
+            { name: '創作麵坊・鮭の大助', image: 'picture/鮭的大助.jpg', rating: '★★★.7', location: '台中市西區向上路一段170號', date: '2023-12-21', category: '拉麵' },
+            { name: '阿騰米糕', image: 'picture/阿騰米糕.jpg', rating: '★★★.5', location: '台中市清水區高美路90號', date: '2023-12-14', category: '小吃' },
+            { name: '小次男咖哩所-審計店', image: 'picture/小次男.jpg', rating: '★★★★', location: '台中市西區美村路一段358號', date: '2023-12-09', category: '咖哩' },
+            { name: '向上市場雞蛋糕', image: 'picture/向上雞蛋糕.jpg', rating: '★★★.9', location: '台中市西區中美街158-2號', date: '2023-11-25', category: '甜點' },
+            { name: '江家餛飩', image: 'picture/江家餛飩.jpg', rating: '★★★★.2', location: '台中市西區華美街204號', date: '2023-11-25', category: '小吃' },
+            { name: 'KUMO麵屋雲', image: 'picture/kumo.jpg', rating: '★★★★.4', location: '台中市西區精美街42-1號', date: '2023-11-02', category: '拉麵' },           
+            { name: '品香古早味麵食館', image: 'picture/品香.jpg', rating: '★★★★', location: '台中市西屯區中工三路200號', date: '2023-07-11', category: '小吃' },
+            { name: '福安市雞肉飯', image: 'picture/福安市.jpg', rating: '★★★★.1', location: '台中市西屯區中工三路210號', date: '2023-07-01', category: '小吃' },
+            { name: '千璽公子', image: 'picture/千璽公子.jpg', rating: '★★★.7', location: '台中市西屯區文心路三段54號', date: '2023-05-05', category: '拉麵' },
+            { name: '朝寢坊の咖哩', image: 'picture/朝寢坊.jpg', rating: '★★★★.6', location: '台中市西屯區大墩十九街3之1號', date: '2023-6-13', category: '咖哩' },
+            { name: '飪室咖哩', image: 'picture/飪室.jpg', rating: '★★★★.3', location: '台中市西區公正路168號', date: '2023-07-22', category: '咖哩' },
+            { name: '多肉系濃厚咖哩', image: 'picture/多肉系.jpg', rating: '★★★.9', location: '台中市西區三民路一段176-3號', date: '2023-05-06', category: '咖哩' },
+            { name: '通庵熟成咖哩', image: 'picture/通庵.jpg', rating: '★★★★.5', location: '台中市西區中興街8號', date: '2023-05-24', category: '咖哩' },
+            { name: '七面鳥', image: 'picture/七面鳥.jpg', rating: '★★★.4', location: '台中市西區中美街331巷15號', date: '2023-03-27', category: '拉麵' },
+            { name: '山下公園', image: 'picture/山下公園.jpg', rating: '★★★★.3', location: '台中市西區健行路1049號金典綠園道商場三樓', date: '2023-01-06', category: '拉麵' },
+            { name: 'Riri&cat手作甜點', image: 'picture/riri&cat.jpg', rating: '★★★.9', location: '台中市西區美村路一段118巷6號', date: '2022-12-30', category: '甜點' },
+            { name: '無名麵店', image: 'picture/無名麵店.jpg', rating: '★★★★.7', location: '台中市西屯區永福路22巷33號', date: '2022-11-29', category: '小吃' },
+            { name: '夜間部爌肉販', image: 'picture/夜間部.jpg', rating: '★★★★.1', location: '台中市西區精誠路109號', date: '2022-10-30', category: '小吃' },
+            { name: '牛庵', image: 'picture/牛庵.jpg', rating: '★★★★.9', location: '台中市西屯區文心路三段107-16號', date: '2022-12-23', category: '拉麵' },
+            { name: 'B&C Dessert 司康鹹派專賣', image: 'picture/B&C.jpg', rating: '★★★.3', location: '台中市西區五權路2之191之1號', date: '2022-09-16', category: '甜點' },        
+            { name: '東海QQ圓', image: 'picture/東海QQ圓.jpg', rating: '★★★★.5', location: '台中市大肚區遊園路二段276號', date: '2021-11-03', category: '甜點' },
+            { name: '偷偷 Toutou Cuisine', image: 'picture/偷偷.jpg', rating: '★★★★.4', location: '台中市西區精誠二街5號', date: '2022-11-29', category: '甜點' }
+        ];
+
+        // 獲取下拉式選單元素
+        const categorySelect = document.getElementById('category-select');
+        const sortSelect = document.getElementById('sort-select');
+        
+        // 初始化頁面時顯示所有食物
+        updateFoodList();
+
+        // 監聽下拉式選單的變化事件
+        categorySelect.addEventListener('change', updateFoodList);
+        sortSelect.addEventListener('change', updateFoodList);
+
+        // 更新食物列表的函數
+        function updateFoodList() {
+            // 獲取選中的類別
+            const selectedcategory = categorySelect.value;
+            const selectedSort = sortSelect.value;
+
+            // 清空原有的食物列表
+            foodList.innerHTML = '';
+
+            // 過濾符合條件的食物
+            const filteredFoods = foods.filter(food => selectedcategory === 'all' || food.category === selectedcategory);
+            
+            // 根據選中的排序方式進行排序
+            if (selectedSort === 'desc') {
+            // 時間由遠到近排序
+                filteredFoods.sort((a, b) => new Date(b.date) - new Date(a.date));
+            } 
+            else {
+            // 時間由近到遠排序
+            filteredFoods.sort((a, b) => new Date(a.date) - new Date(b.date));
+            }
+
+        // 將過濾後的食物生成卡片並添加到列表中
+        filteredFoods.forEach(food => {
+                const foodCard = document.createElement('div');
+                foodCard.classList.add('food-card');
+
+                const foodLink = document.createElement('a');
+                foodLink.href = `food_detail.html?name=${encodeURIComponent(food.name)}`; // 將食物的名稱或ID添加到超連結中
+
+                const foodImage = document.createElement('img');
+                foodImage.src = food.image;
+                foodImage.alt = food.name;
+
+                const foodTitle = document.createElement('h3');
+                foodTitle.textContent = food.name;
+
+                const rating = document.createElement('p');
+                rating.textContent = `評價：${food.rating}`;
+
+                const date = document.createElement('p');
+                date.textContent = `日期：${food.date}`;
+
+                const category = document.createElement('p');
+                category.textContent = `類別：${food.category}`; 
+
+                foodLink.appendChild(foodImage);
+                foodLink.appendChild(foodTitle);
+                foodCard.appendChild(foodLink);
+                foodCard.appendChild(rating);
+                foodCard.appendChild(date);
+                foodCard.appendChild(category);
+
+                foodList.appendChild(foodCard);
+            });
+        }
+    </script>
+</body>
+</html>

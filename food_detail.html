@@ -1,0 +1,134 @@
+<!-- food_detail.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>食物詳細內容</title>
+</head>
+<body>
+    <header>
+        <h1>Hua的美食筆記</h1>
+        <p>聯絡信箱: rubyluh11@gmail.com</p>
+        <nav>
+            <ul>
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="food_record.html">美食紀錄</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="food-details">
+        <!-- 這裡會動態生成食物詳細內容 -->
+    </section>
+
+    <footer>
+        <p>探索更多美食 ➔ <a href="food_record.html">美食紀錄</a></p>
+    </footer>
+
+    <script>
+        const foodDetails = document.getElementById('food-details');
+
+        // 取得網址中的名稱或ID
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const name = decodeURIComponent(urlParams.get('name'));
+
+        const foods = [
+            { name: '創作麵坊・鮭の大助', image: 'picture/鮭的大助.jpg', rating: '★★★.7', location: '台中市西區向上路一段170號', date: '2023-12-21', category: '拉麵' },
+            { name: '阿騰米糕', image: 'picture/阿騰米糕.jpg', rating: '★★★.5', location: '台中市清水區高美路90號', date: '2023-12-14', category: '小吃' },
+            { name: '小次男咖哩所-審計店', image: 'picture/小次男.jpg', rating: '★★★★', location: '台中市西區美村路一段358號', date: '2023-12-09', category: '咖哩' },
+            { name: '向上市場雞蛋糕', image: 'picture/向上雞蛋糕.jpg', rating: '★★★.9', location: '台中市西區中美街158-2號', date: '2023-11-25', category: '甜點' },
+            { name: '江家餛飩', image: 'picture/江家餛飩.jpg', rating: '★★★★.2', location: '台中市西區華美街204號', date: '2023-11-25', category: '小吃' },
+            { name: 'KUMO麵屋雲', image: 'picture/kumo.jpg', rating: '★★★★.4', location: '台中市西區精美街42-1號', date: '2023-11-02', category: '拉麵' },           
+            { name: '品香古早味麵食館', image: 'picture/品香.jpg', rating: '★★★★', location: '台中市西屯區中工三路200號', date: '2023-07-11', category: '小吃' },
+            { name: '福安市雞肉飯', image: 'picture/福安市.jpg', rating: '★★★★.1', location: '台中市西屯區中工三路210號', date: '2023-07-01', category: '小吃' },
+            { name: '千璽公子', image: 'picture/千璽公子.jpg', rating: '★★★.7', location: '台中市西屯區文心路三段54號', date: '2023-05-05', category: '拉麵' },
+            { name: '朝寢坊の咖哩', image: 'picture/朝寢坊.jpg', rating: '★★★★.6', location: '台中市西屯區大墩十九街3之1號', date: '2023-6-13', category: '咖哩' },
+            { name: '飪室咖哩', image: 'picture/飪室.jpg', rating: '★★★★.3', location: '台中市西區公正路168號', date: '2023-07-22', category: '咖哩' },
+            { name: '多肉系濃厚咖哩', image: 'picture/多肉系.jpg', rating: '★★★.9', location: '台中市西區三民路一段176-3號', date: '2023-05-06', category: '咖哩' },
+            { name: '通庵熟成咖哩', image: 'picture/通庵.jpg', rating: '★★★★.5', location: '台中市西區中興街8號', date: '2023-05-24', category: '咖哩' },
+            { name: '七面鳥', image: 'picture/七面鳥.jpg', rating: '★★★.4', location: '台中市西區中美街331巷15號', date: '2023-03-27', category: '拉麵' },
+            { name: '山下公園', image: 'picture/山下公園.jpg', rating: '★★★★.3', location: '台中市西區健行路1049號金典綠園道商場三樓', date: '2023-01-06', category: '拉麵' },
+            { name: 'Riri&cat手作甜點', image: 'picture/riri&cat.jpg', rating: '★★★.9', location: '台中市西區美村路一段118巷6號', date: '2022-12-30', category: '甜點' },
+            { name: '無名麵店', image: 'picture/無名麵店.jpg', rating: '★★★★.7', location: '台中市西屯區永福路22巷33號', date: '2022-11-29', category: '小吃' },
+            { name: '夜間部爌肉販', image: 'picture/夜間部.jpg', rating: '★★★★.1', location: '台中市西區精誠路109號', date: '2022-10-30', category: '小吃' },
+            { name: '牛庵', image: 'picture/牛庵.jpg', rating: '★★★★.9', location: '台中市西屯區文心路三段107-16號', date: '2022-12-23', category: '拉麵' },
+            { name: 'B&C Dessert 司康鹹派專賣', image: 'picture/B&C.jpg', rating: '★★★.3', location: '台中市西區五權路2之191之1號', date: '2022-09-16', category: '甜點' },        
+            { name: '東海QQ圓', image: 'picture/東海QQ圓.jpg', rating: '★★★★.5', location: '台中市大肚區遊園路二段276號', date: '2021-11-03', category: '甜點' },
+            { name: '偷偷 Toutou Cuisine', image: 'picture/偷偷.jpg', rating: '★★★★.4', location: '台中市西區精誠二街5號', date: '2022-11-29', category: '甜點' }
+        ];
+
+        // 初始化頁面時顯示指定食物的詳細內容
+        const selectedFood = foods.find(food => food.name === name);
+        if (selectedFood) {
+            showFoodDetails(selectedFood);
+        }
+
+        // 顯示食物詳細內容的函數
+        function showFoodDetails(food) {
+            // 清空原有的內容
+            foodDetails.innerHTML = '';
+
+            // 創建食物詳細內容卡片
+            const foodCard = createFoodCard(food);
+
+            // 異步讀取心得信息
+            fetch('feeling.json')
+                .then(response => response.json())
+                .then(feelings => {
+                    // 查找相應食物的心得信息
+                    const feeling = feelings.find(item => item.name === food.name);
+
+                    // 添加心得信息
+                    const reviewParagraph = document.createElement('p');
+                    reviewParagraph.textContent = `心得：${feeling ? feeling.review : '暫無心得'}`;
+
+                    // 添加到食物詳細內容卡片中
+                    foodCard.appendChild(reviewParagraph);
+
+                    // 顯示食物詳細內容
+                    foodDetails.appendChild(foodCard);
+                })
+                .catch(error => {
+                    console.error('Error fetching feeling.json:', error);
+                });
+        }
+
+        // 創建食物卡片的函數
+        function createFoodCard(food) {
+            const foodCard = document.createElement('div');
+            foodCard.classList.add('food-card');
+
+            const foodImage = document.createElement('img');
+            foodImage.src = food.image;
+            foodImage.alt = food.name;
+
+            const foodTitle = document.createElement('h3');
+            foodTitle.textContent = food.name;
+
+            const rating = document.createElement('p');
+            rating.textContent = `評價：${food.rating}`;
+
+            const location = document.createElement('p');
+            location.textContent = `地點：${food.location}`;
+            
+            const date = document.createElement('p');
+            date.textContent = `日期：${food.date}`;
+            
+            const category = document.createElement('p');
+            category.textContent = `類別：${food.category}`;
+            
+            foodCard.appendChild(foodImage);
+            foodCard.appendChild(foodTitle);
+            foodCard.appendChild(rating);
+            foodCard.appendChild(location);
+            foodCard.appendChild(date);
+            foodCard.appendChild(category);
+
+            return foodCard;
+        }
+    </script>
+</body>
+</html>
